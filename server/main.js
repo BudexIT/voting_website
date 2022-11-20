@@ -31,6 +31,8 @@ const { randomUUID } = require("crypto");
 // Voting Mechanism
 const validVotes = JSON.parse(fs.readFileSync("server/dev/votes.json"));;
 const votesToConfirm = {};
+const emailsTaken = (()=>{ let a = {}; for(const v of validVotes){ a[v.email] = true; } return a;})();
+
 function confirmVote(uuid) {
 	if(!votesToConfirm[uuid]) {
 		return false;
@@ -55,6 +57,8 @@ function confirmVote(uuid) {
 	catch(err) {
 		console.error(err);
 	}
+
+	emailsTaken[vote.email] = true;
 
 	console.log(`UUID ${uuid} for ${vote.email} has been confirmed!`);
 
@@ -189,6 +193,12 @@ app.post("/submit_vote", async(req, res, next) => {
 		return;
 	}
 
+	if(emailsTaken[req.body.email]) {
+		console.error("User email is already taken.");
+		res.send("Email Taken");
+		return;
+	}
+
 	const vote = {
 		first: req.body.first,
 		second: req.body.second,
@@ -251,7 +261,7 @@ app.get("/confirm_vote", (req, res, next) => {
 	const result = confirmTemplate
 	.replaceAll("{%TITLE}", "Gratulacje!")
 	.replaceAll("{%HEADER}", `Dziękujemy za Twój głos, ${votedata.name}`)
-	.replaceAll("{%MESSAGE}", `Postawiłaś/eś na to, że pierwsze miejsce zajmie ${teamsJSON[parseInt(votedata.first)].name}, drugie ${teamsJSON[parseInt(votedata.second)].name} a trzecie ${teamsJSON[parseInt(votedata.first)].name}. Dziękujemy serdecznie za udział w głosowaniu! (Ten link nie będzie już działać!)`);
+	.replaceAll("{%MESSAGE}", `Postawiłaś/eś na to, że pierwsze miejsce zajmie ${teamsJSON[parseInt(votedata.first)].name}, drugie ${teamsJSON[parseInt(votedata.second)].name} a trzecie ${teamsJSON[parseInt(votedata.third)].name}. Dziękujemy serdecznie za udział w głosowaniu! (Ten link nie będzie już działać!)`);
 	res.send(result);
 });
 // ON THE CLIENT SIDE:
