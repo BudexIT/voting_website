@@ -20,6 +20,7 @@ const gmailCred = JSON.parse(fs.readFileSync("server/devgmail/creds.json"));
 const gmailUser = gmailCred.address;
 const gmailPass = gmailCred.password;
 const gmailTemplate = String(fs.readFileSync("server/devgmail/template.html"));
+const confirmTemplate = String(fs.readFileSync("server/devgmail/response.html"));
 const gmailLogo = fs.readFileSync("server/devgmail/logo.png");
 const expected = JSON.parse(fs.readFileSync("server/dev/expected.json"));
 const expectedMailHost = expected.mailHost;
@@ -30,6 +31,8 @@ const { randomUUID } = require("crypto");
 // Voting Mechanism
 const validVotes = JSON.parse(fs.readFileSync("server/dev/votes.json"));;
 const votesToConfirm = {};
+const emailsTaken = (()=>{ let a = {}; for(const v of validVotes){ a[v.email] = true; } return a;})();
+
 function confirmVote(uuid) {
 	if(!votesToConfirm[uuid]) {
 		return false;
@@ -54,7 +57,9 @@ function confirmVote(uuid) {
 	catch(err) {
 		console.error(err);
 	}
-	
+
+	emailsTaken[vote.email] = true;
+
 	console.log(`UUID ${uuid} for ${vote.email} has been confirmed!`);
 
 	return true;
@@ -87,7 +92,7 @@ function createVoteToConfirm(vote) {
 		}
 		delete votesToConfirm[uuid];
 		console.log(`UUID ${uuid} for ${vote.name} ${vote.surname} at ${vote.email} timed out!`);
-	}, 30*1000);
+	}, 60*60*1000);
 	return uuid;
 }
 
@@ -188,6 +193,12 @@ app.post("/submit_vote", async(req, res, next) => {
 		return;
 	}
 
+	if(emailsTaken[req.body.email]) {
+		console.error("User email is already taken.");
+		res.send("Email Taken");
+		return;
+	}
+
 	const vote = {
 		first: req.body.first,
 		second: req.body.second,
@@ -238,11 +249,20 @@ app.get("/confirm_vote", (req, res, next) => {
 	const votedata = votesToConfirm[req.query.id];
 
 	if(!confirmVote(req.query.id)) {
-		res.send(`Hello, ${req.query.id}! You are not on the list! You were propably timed out!`);
+		// res.send(`Hello, ${req.query.id}! You are not on the list! You were propably timed out!`);
+		const result = confirmTemplate
+		.replaceAll("{%TITLE}", "Za późno!")
+		.replaceAll("{%HEADER}", "Twoje zgłoszenie wygasło!")
+		.replaceAll("{%MESSAGE}", "Czas na potwierdzenie głosu minął. Zagłosuj jeszcze raz na <a href=\"https://budex.live/\">https://budex.live/</a>, aby oddać ważny głos.");
+		res.send(result);
 		return;
 	}
 	
-	res.send(`Hello, ${votedata.name} ${votedata.surname}! You've voted for ${votedata.first} i see? ^^`);
+	const result = confirmTemplate
+	.replaceAll("{%TITLE}", "Gratulacje!")
+	.replaceAll("{%HEADER}", `Dziękujemy za Twój głos, ${votedata.name}`)
+	.replaceAll("{%MESSAGE}", `Postawiłaś/eś na to, że pierwsze miejsce zajmie ${teamsJSON[parseInt(votedata.first)].name}, drugie ${teamsJSON[parseInt(votedata.second)].name} a trzecie ${teamsJSON[parseInt(votedata.third)].name}. Dziękujemy serdecznie za udział w głosowaniu! (Ten link nie będzie już działać!)`);
+	res.send(result);
 });
 // ON THE CLIENT SIDE:
 // https://localhost:8443/confirm_vote?id=37e9206c-0d54-4f2b-addc-b77bf697e68d

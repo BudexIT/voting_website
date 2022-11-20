@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/png" href="/mail/logo.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{%TITLE}</title>
+
+	<style>
+		body {
+			display: flex;
+			font-family: "system-ui", sans-serif;
+			overflow: hidden;
+		}
+		.section-left {
+			flex: 1;
+			background-image: url("/assets/thomas-serer-unsplash.3de5bc66.jpg");
+			height: 100vh;
+			background-position: right;
+			background-size: cover;
+			transform: rotate(-4deg) scale(1.2);
+			box-shadow: 0 0 2rem 1rem #00000050;
+			margin: 0;
+			box-shadow: rgba(0, 0, 0, 0.31) 0px 0px 2rem 1rem;
+		}
+		.section-right {
+			flex: 3;
+			display: flex;
+			flex-flow: column;
+			justify-content: center;
+			align-items: center;
+		}
+		#inner {
+			margin-left: 10%;
+		}
+	</style>
+
+</head>
+<body>
+
+	<div class="section-left"></div>
+	<div class="section-right">
+		<div id="inner">
+			<h1>{%HEADER}</h1>
+			<h3>{%MESSAGE}</h3>
+		</div>
+	</div>
+</body>
+</html>
