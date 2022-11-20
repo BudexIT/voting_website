@@ -275,6 +275,18 @@ app.use(express.static('www/dist'));
 app.use("/src/assets/teams.json", (req, res, next) => {
 	res.json(teamsJSON);
 });
+const b_trophy = fs.readFileSync("www/src/assets/b_trophy.png");
+app.use("/src/assets/b_trophy.png", (req, res, next) => {
+	res.send(b_trophy);
+});
+const s_trophy = fs.readFileSync("www/src/assets/s_trophy.png");
+app.use("/src/assets/s_trophy.png", (req, res, next) => {
+	res.send(s_trophy);
+});
+const g_trophy = fs.readFileSync("www/src/assets/g_trophy.png");
+app.use("/src/assets/g_trophy.png", (req, res, next) => {
+	res.send(g_trophy);
+});
 
 // Server setup
 // HTTP & HTTPS

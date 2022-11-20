@@ -34,7 +34,7 @@
 
 	setContext('setMedal', setMedal);
 
-	fetch("src/assets/teams.json", {method: 'GET', headers: {'Content-Type': 'application/json'}})
+	fetch("/src/assets/teams.json", {method: 'GET', headers: {'Content-Type': 'application/json'}})
 	.then(res => {
 		res.json()
 		.then(json => {
