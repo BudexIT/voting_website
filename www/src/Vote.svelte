@@ -1,4 +1,5 @@
 <script>
+    import { setContext } from "svelte/internal";
     import Card from "./Card.svelte";
 
     function handleVoting() {
@@ -6,6 +7,35 @@
   	}
 
 	let teams = [];
+
+	let medal = 3;
+	let vote = true;
+
+	function setMedal() {
+		const pre_medal = medal;
+		switch (medal) {
+			case 3:
+				console.log('🤓');
+				medal = 2;
+				break;
+			case 2:
+				console.log('👆');
+				medal = 1;
+				break;
+			case 1:
+				console.log('😎👈');
+				vote = false;
+				medal = null;
+			default:
+				break;
+		}
+
+		return pre_medal;
+	}
+
+	setContext('setMedal', setMedal);
+
+	
 
 	fetch("src/assets/teams.json", {method: 'GET', headers: {'Content-Type': 'application/json'}})
 	.then(res => {
