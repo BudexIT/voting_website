@@ -33,7 +33,6 @@ Pojawi się przed tobą formularz, wypełnij dane, ale **pamiętaj, aby wpisać 
 
 ![2022-11-20 21-20-50](https://user-images.githubusercontent.com/68645604/202924486-696ecbb2-4613-4c4e-ae61-e331b04edfb6.gif)
 
-![2022-11-20 21-20-50](https://user-images.githubusercontent.com/68645604/202924576-1ac3dee7-4975-4b93-8ded-0a029f959a03.gif)
 
 ## Dobrej zabawy i niezapomnianych emoji!
 
