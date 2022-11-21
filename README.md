@@ -33,7 +33,7 @@ Pojawi się przed tobą formularz, wypełnij dane, ale **pamiętaj, aby wpisać 
 
 ![2022-11-20 21-20-50](https://user-images.githubusercontent.com/68645604/202924486-696ecbb2-4613-4c4e-ae61-e331b04edfb6.gif)
 
-Jeśli poprawnie wykonałeś powyższe kroki na swoją skrzynkę poczty szkolnej, na serwisie [Outlook](https://www.outlook.com), otrzymasz prośbę o potwierdzenie głosu, kliknij w link potwierdzający w ciągu godziny od wypełnienia formularza:
+Jeśli poprawnie wykonałeś powyższe kroki na swoją skrzynkę poczty szkolnej, na serwisie [Outlook](https://www.outlook.com), otrzymasz prośbę o potwierdzenie głosu, kliknij w link potwierdzający w ciągu godziny od wypełnienia formularza. 
 Pamiętaj żeby sprawdzić kategorię `wiadomości śmieci`, bo mógł tam wylądować nasz mail. 
 
 ![image](https://user-images.githubusercontent.com/68645604/202924933-824667cd-a234-4d6f-8289-4ff743b1b5b3.png)
