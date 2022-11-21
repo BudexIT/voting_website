@@ -1,4 +1,8 @@
 <script>
+    export let firstChoice;
+    export let secondChoice;
+    export let thirdChoice;
+
     let classSelected = "";
     const classes = [
         "Nauczyciel",
@@ -35,24 +39,26 @@
 
     function sendForm(e) {
         e.preventDefault();
+        const textBody = JSON.stringify({
+            first: firstChoice,
+            second: secondChoice,
+            third: thirdChoice,
+            name: name,
+            surname: surname,
+            class: classSelected,
+            email: email
+        });
         fetch("/submit_vote", {
             headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({
-                first: 31,
-                second: 22,
-                third: 15,
-                name: name,
-                surname: surname,
-                class: classSelected,
-                email: email
-            })
+            body: textBody
         })
         .then(res => res.text())
         .then(txt => {console.log("GOT:" + txt)});
+        console.log(textBody);
     }
 </script>
 

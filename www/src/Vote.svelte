@@ -9,20 +9,27 @@
 
 	let teams = [];
 
+	let ch1 = 0;
+	let ch2 = 0;
+	let ch3 = 0;
+
 	let medal = 3;
 
-	function setMedal() {
+	function setMedal(id) {
 		const pre_medal = medal;
 		switch (medal) {
 			case 3:
+				ch1 = id;
 				console.log('🤓');
 				medal = 2;
 				break;
 			case 2:
+				ch2 = id;
 				console.log('👆');
 				medal = 1;
 				break;
 			case 1:
+				ch3 = id;
 				console.log('😎👈');
 				medal = null;
 			default:
@@ -51,7 +58,7 @@
 
 	<div id="team_view">
 		{#each teams as team}
-			<Card country_name="{team.name}" flag_image="{team.img}"/>
+			<Card country_id={team.id} country_name="{team.name}" flag_image="{team.img}"/>
 		{/each}
 	</div>
 
@@ -61,6 +68,8 @@
         </button>
     </div>
 </div>
+
+<Login bind:firstChoice={ch1} bind:secondChoice={ch2} bind:thirdChoice={ch3} />
 
 <style>
 	#team_view {

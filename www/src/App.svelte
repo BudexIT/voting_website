@@ -9,7 +9,6 @@
     </div>
     <div class="section--right">
       <Vote />
-      <Login />
     </div>
   </div>
 </main>

@@ -4,13 +4,14 @@
 
 	export let country_name;
 	export let flag_image;
+	export let country_id;
 	let current_medal = null;
 
 	let setMedal = getContext('setMedal');
 
 	function handleClick() {
 		if (current_medal == null) {
-			current_medal = setMedal();
+			current_medal = setMedal(country_id);
 		}
 	}
 
