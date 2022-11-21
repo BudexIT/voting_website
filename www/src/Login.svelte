@@ -1,4 +1,7 @@
 <script>
+    import { getContext } from "svelte";
+
+
     export let firstChoice;
     export let secondChoice;
     export let thirdChoice;
@@ -33,13 +36,22 @@
         "4iG"
     ];
 
+	let disableSubmit = false;
+
     let name = "";
     let surname = "";
     let email = "";
 
+	const voteSuccessful = getContext("voteSuccessful");
+
     function sendForm(e) {
         e.preventDefault();
-        const textBody = JSON.stringify({
+		if(!((email.split('@')[1]) == "zs2.pulawy.pl")) {
+			alert("Adres Email musi być szkolny [ @zs2.pulawy.pl ]!");
+			return;
+		}
+
+		const textBody = JSON.stringify({
             first: firstChoice,
             second: secondChoice,
             third: thirdChoice,
@@ -57,7 +69,30 @@
             body: textBody
         })
         .then(res => res.text())
-        .then(txt => {console.log("GOT:" + txt)});
+        .then(txt => {
+			// It has been loaded
+			console.log("GOT:" + txt)
+
+			// if(txt != "") {
+			if(txt != "Ok") {
+				disableSubmit = false;
+				if(txt == "Email Error") {
+					alert("Podany adres Email nie istnieje.");
+				}
+				else if(txt == "Email Incorrect") {
+					alert("Adres Email musi być szkolny [ @zs2.pulawy.pl ]!");
+				}
+				else {
+					alert("Niespodziewany błąd, prosimy spróbować ponownie później!");
+				}
+			}
+			else {
+				voteSuccessful();
+			}
+		});
+
+		disableSubmit = true;
+
         console.log(textBody);
     }
 </script>
@@ -76,7 +111,7 @@
             {/each}
         </select>
         <input type="email" bind:value={email} placeholder="Email" class="login--mail" required>
-        <input type="submit" class="login--submit" required>
+        <input type="submit" class="login--submit" disabled={disableSubmit}>
     </form>
 </div>
 
