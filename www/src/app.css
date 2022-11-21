@@ -142,6 +142,8 @@ img {
 
 .voting__submit {
   grid-column-start: span 2;
+  display: flex;
+  flex-direction: row;
 }
 
 .voting__submit button {

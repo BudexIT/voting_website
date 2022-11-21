@@ -5,7 +5,16 @@
 	export let country_name;
 	export let flag_image;
 	export let country_id;
+
+	export let global_medal_state;
+
 	let current_medal = null;
+
+	$: {
+		if(global_medal_state == 3) {
+			current_medal = null;
+		}
+	}
 
 	let setMedal = getContext('setMedal');
 

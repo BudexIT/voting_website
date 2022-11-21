@@ -3,17 +3,24 @@
     import Card from "./Card.svelte";
     import Login from "./Login.svelte";
 
-    function handleVoting() {
-    	// do nothing (meme)
-  	}
 
 	let teams = [];
+	fetch("/src/assets/teams.json", {method: 'GET', headers: {'Content-Type': 'application/json'}})
+	.then(res => {
+		res.json()
+		.then(json => {
+			teams = json;
+			console.log(teams);
+		});
+	});
 
 	let ch1 = 0;
 	let ch2 = 0;
 	let ch3 = 0;
 
 	let medal = 3;
+
+	let askToLogin = false;
 
 	function setMedal(id) {
 		const pre_medal = medal;
@@ -38,38 +45,53 @@
 
 		return pre_medal;
 	}
-
 	setContext('setMedal', setMedal);
 
-	fetch("/src/assets/teams.json", {method: 'GET', headers: {'Content-Type': 'application/json'}})
-	.then(res => {
-		res.json()
-		.then(json => {
-			teams = json;
-			console.log(teams);
-		});
-	});
+    function handleLogin() {
+		askToLogin = (medal == null);
+	}
+
+	function handleDecline() {
+		askToLogin = false;
+		medal = 3;
+		ch1 = 0;
+		ch2 = 0;
+		ch3 = 0;
+	}
+
 </script>
 
 <div class="voting">
     <div class="voting__header">
-    <h2>Kto zajmie 1. miejsce?</h2>
+    <h2>
+		{#if medal != null}
+			Kto zajmie {4-medal}. miejsce?
+		{:else}
+			Oddaj głos, albo anuluj!	
+		{/if}
+
+	</h2>
     </div>
 
 	<div id="team_view">
 		{#each teams as team}
-			<Card country_id={team.id} country_name="{team.name}" flag_image="{team.img}"/>
+			<Card global_medal_state={medal} country_id={team.id} country_name="{team.name}" flag_image="{team.img}"/>
 		{/each}
 	</div>
 
     <div class="voting__submit">
-        <button on:click={handleVoting}>
+        <button on:click={handleDecline} id="decline">
+            Anuluj
+        </button>
+        <button on:click={handleLogin}>
             Oddaj głos
         </button>
     </div>
 </div>
 
-<Login bind:firstChoice={ch1} bind:secondChoice={ch2} bind:thirdChoice={ch3} />
+{#if askToLogin}
+	<Login bind:firstChoice={ch1} bind:secondChoice={ch2} bind:thirdChoice={ch3} />
+{/if}
 
 <style>
 	#team_view {
@@ -85,5 +107,8 @@
 		padding: 1rem;
   		grid-column-start: span 2;
 		flex-wrap: wrap;
+	}
+	#decline {
+		background-color: #ff2d2d;
 	}
 </style>
