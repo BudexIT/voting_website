@@ -36,13 +36,13 @@
 	<div class="trophies">
 		<div class="trophy">
 			{#if current_medal == 1}
-				<img src="/src/assets/b_trophy.png" class="trophy__img" alt="trophy">
+				<img src="/src/assets/b_trophy.png" class="trophy__img" alt="3">
 			{/if}
 			{#if current_medal == 2}
-				<img src="/src/assets/s_trophy.png" class="trophy__img" alt="trophy">
+				<img src="/src/assets/s_trophy.png" class="trophy__img" alt="2">
 			{/if}
 			{#if current_medal == 3}
-				<img src="/src/assets/g_trophy.png" class="trophy__img" alt="trophy">
+				<img src="/src/assets/g_trophy.png" class="trophy__img" alt="1">
 			{/if}
 		</div>
 	</div>
