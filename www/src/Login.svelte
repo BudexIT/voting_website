@@ -1,5 +1,6 @@
 <script>
     import { getContext } from "svelte";
+    import { construct_svelte_component } from "svelte/internal";
 
 
     export let firstChoice;
@@ -44,6 +45,15 @@
 
 	const voteSuccessful = getContext("voteSuccessful");
 
+	let debugTeams = [];
+	fetch("/src/assets/teams.json", {method: 'GET', headers: {'Content-Type': 'application/json'}})
+	.then(res => {
+		res.json()
+		.then(json => {
+			debugTeams = json;
+		});
+	});
+	
     function sendForm(e) {
         e.preventDefault();
 		if(!((email.split('@')[1]) == "zs2.pulawy.pl")) {
@@ -82,6 +92,9 @@
 				else if(txt == "Email Incorrect") {
 					alert("Adres Email musi być szkolny [ @zs2.pulawy.pl ]!");
 				}
+				else if(txt == "Email Taken") {
+					alert("Ten Adres Email jest już zajęty! Głos można oddać tylko raz!");
+				}
 				else {
 					alert("Niespodziewany błąd, prosimy spróbować ponownie później!");
 				}
@@ -93,7 +106,12 @@
 
 		disableSubmit = true;
 
-        console.log(textBody);
+		/* A little fun with debugging */ 
+		const yetAnotherBody = JSON.parse(textBody);
+		yetAnotherBody.first = debugTeams[yetAnotherBody.first].name;
+		yetAnotherBody.second = debugTeams[yetAnotherBody.second].name;
+		yetAnotherBody.third = debugTeams[yetAnotherBody.third].name;
+		console.log(yetAnotherBody);
     }
 </script>
 
